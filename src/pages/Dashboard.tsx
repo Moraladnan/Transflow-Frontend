@@ -1,47 +1,36 @@
-import { Typography, Paper, Box, Stack } from '@mui/material';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Dashboard() {
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom className="mb-4">
-        Dashboard
-      </Typography>
-      <Stack
-        direction={{ xs: 'column', md: 'row' }}
-        spacing={3}
-        sx={{ flexWrap: 'wrap' }}
-      >
-        <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 calc(50% - 12px)', lg: '1 1 calc(33.333% - 16px)' } }}>
-          <Paper className="p-6 rounded-lg">
-            <Typography variant="h6" gutterBottom>
-              Total Users
-            </Typography>
-            <Typography variant="h3" className="text-primary">
-              1,234
-            </Typography>
-          </Paper>
-        </Box>
-        <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 calc(50% - 12px)', lg: '1 1 calc(33.333% - 16px)' } }}>
-          <Paper className="p-6 rounded-lg">
-            <Typography variant="h6" gutterBottom>
-              Active Sessions
-            </Typography>
-            <Typography variant="h3" className="text-primary">
-              567
-            </Typography>
-          </Paper>
-        </Box>
-        <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 calc(50% - 12px)', lg: '1 1 calc(33.333% - 16px)' } }}>
-          <Paper className="p-6 rounded-lg">
-            <Typography variant="h6" gutterBottom>
-              Total Transactions
-            </Typography>
-            <Typography variant="h3" className="text-primary">
-              8,901
-            </Typography>
-          </Paper>
-        </Box>
-      </Stack>
-    </Box>
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Users</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold text-primary">1,234</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Active Sessions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold text-primary">567</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Transactions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold text-primary">8,901</p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
+

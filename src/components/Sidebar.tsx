@@ -1,22 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-  Box,
-  Typography,
-} from '@mui/material';
-import {
-  Home as HomeIcon,
-  Dashboard as DashboardIcon,
-  Settings as SettingsIcon,
-} from '@mui/icons-material';
-
-const drawerWidth = 240;
+import { Home, LayoutDashboard, Settings } from 'lucide-react';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   mobileOpen: boolean;
@@ -24,94 +9,57 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { text: 'Home', icon: <HomeIcon />, path: '/' },
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+  { text: 'Home', icon: Home, path: '/' },
+  { text: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { text: 'Settings', icon: Settings, path: '/settings' },
 ];
 
 export default function Sidebar({ mobileOpen, onDrawerToggle }: SidebarProps) {
   const location = useLocation();
-  const theme = useTheme();
 
   const drawer = (
-    <Box>
-      <Box className="p-4 border-b border-gray-200">
-        <Typography variant="h6" className="font-bold text-primary">
-          TransFlow
-        </Typography>
-      </Box>
-      <List>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              component={Link}
+    <div className="h-full flex flex-col">
+      <div className="p-4 border-b">
+        <h2 className="text-xl font-bold text-primary">TransFlow</h2>
+      </div>
+      <nav className="flex-1 p-2">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.text}
               to={item.path}
-              selected={location.pathname === item.path}
-              sx={{
-                '&.Mui-selected': {
-                  backgroundColor: theme.palette.primary.light,
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.light,
-                  },
-                },
-              }}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-md transition-colors mb-1',
+                isActive
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-accent hover:text-accent-foreground'
+              )}
             >
-              <ListItemIcon
-                sx={{
-                  color:
-                    location.pathname === item.path
-                      ? theme.palette.primary.main
-                      : 'inherit',
-                }}
-              >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+              <Icon className="h-5 w-5" />
+              <span>{item.text}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
   );
 
   return (
-    <Box
-      component="nav"
-      sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
-    >
+    <>
       {/* Mobile drawer */}
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={onDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better mobile performance
-        }}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-          },
-        }}
-      >
-        {drawer}
-      </Drawer>
+      <Sheet open={mobileOpen} onOpenChange={onDrawerToggle}>
+        <SheetContent side="left" className="p-0 w-60">
+          {drawer}
+        </SheetContent>
+      </Sheet>
 
       {/* Desktop drawer */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: 'none', md: 'block' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-          },
-        }}
-        open
-      >
+      <aside className="hidden md:block w-60 border-r bg-card">
         {drawer}
-      </Drawer>
-    </Box>
+      </aside>
+    </>
   );
 }
+
